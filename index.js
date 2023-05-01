@@ -1,63 +1,56 @@
-// const { validate } = require('@babel/types');
-const inquirer = require('inquirer');
-const fs = require('fs');
-const {circle, square, triangle} = require('./lib/shapes');
+const fs = require('fs')
+const inquirer = require("inquirer");
+const {Circle, Square, Triangle} = require("./lib/shapes");
 
-class svgConstructor {
+class svgConstructor{
     constructor(){
-        this.text = ''
+        this.textEl = ''
         this.shapeEl = ''
     }
     render(){
-        return `<svg...`
+
+        return `<svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="300" height="200">${this.shapeEl}${this.textEl}</svg>`
     }
     setTextElement(text,color){
-        this.textElement = `<text x="150" y="125" font-size="60" text-anchor="middle" fill="${color}">${text}</text>`
+        this.textEl = `<text x="150" y="125" font-size="60" text-anchor="middle" fill="${color}">${text}</text>`
     }
     setShapeElement(shape){
-        this.shapeElement = shape.render()
+        this.shapeEl = shape.render()
 
     }
-};
+    
+}
 
-
+// Defines array of 'questions' using the 'inquirer' library with the following questions.
+// Each question is an object that specifies the properties of TEXT, TEXT COLOR, SHAPE COLOR, and Pixel Image.
 const questions = [
     {
-        type: 'list',
-        name: 'color',
-        message: 'What color would you like the image to be?',
-        choices: ['red', 'blue', 'green', 'yellow']
+        type: "input",
+        name: "text",
+        message: "TEXT: Please enter up to (3) Characters only:",
     },
     {
-        type: 'list',
-        name: 'shape',
-        message: 'Please select a shape for the logo.',
-        choices: ['circle', 'square', 'triangle']
+        type: "input",
+        name: "textColor",
+        message: "TEXT COLOR: Please enter a color for your Text:",
     },
     {
-        type: 'input',
-        name: 'text',
-        message: 'Please enter 3 letters to be displayed on the logo.',
-        validate: nameInput => {
-            if (nameInput.length > 0 || nameInput.length < 4) {
-                return true;
-            } else {
-                console.log("Please make sure that your text is between 1-3 characters long!");
-                return false;
-            }
-        }
+        type: "input",
+        name: "shape",
+        message: "SHAPE COLOR: What color would you like your shape to be:",
     },
     {
-        type: 'list',
-        name: 'text-color',
-        message: 'Please select a color for your text',
-        choices: ['red', 'blue', 'green', 'yellow']
-    }
+        type: "list",
+        name: "shapeType",
+        message: "Choose which Pixel Image you would like?",
+        choices: ["Circle", "Square", "Triangle"],
+    },
 ];
 
+// Function to write data to file
 function writeToFile(fileName, data) {
-	console.log("Writing [" + data + "] to file [" + fileName + "]")
-    filesystem.writeFile(fileName, data, function (err) {
+	console.log(`Writing ${data} to file ${fileName}`)
+    fs.writeFile(fileName, data, function (err) {
         if (err) {
             return console.log(err);
         }
@@ -67,8 +60,8 @@ function writeToFile(fileName, data) {
 
 async function init() {
     console.log("Starting init");
-	let svgText = "";
-	let svg_file = "logo.svg";
+	var svgText = "";
+	var svg_file = "logo.svg";
 
     // Prompt the user for answers
     const answers = await inquirer.prompt(questions);
@@ -83,59 +76,46 @@ async function init() {
 		console.log("Invalid user text field detected! Please enter 1-3 Characters, no more and no less");
         return;
 	}
-	console.log("User text: [" + user_text + "]");
+	console.log(`User text: ${user_text}`);
 	//user font color
-	user_font_color = answers["text-color"];
-	console.log("User font color: [" + user_font_color + "]");
+	fontColor = answers["textColor"];
+	console.log(`User font color: ${fontColor}`);
 	//user shape color
-	user_shape_color = answers.shape;
-	console.log("User shape color: [" + user_shape_color + "]");
+	shapeColor = answers.shape;
+	console.log(`User shape color: ${shapeColor}`);
 	//user shape type
-	user_shape_type = answers["pixel-image"];
-	console.log("User entered shape = [" + user_shape_type + "]");
+	shapeType = answers["shapeType"];
+	console.log(`User entered shape = ${shapeType}`);
 	
 	//user shape
-	let user_shape;
-	if (user_shape_type === "Square" || user_shape_type === "square") {
-		user_shape = new Square();
+	let userShape;
+	if (shapeType === "Square" || shapeType === "square") {
+		userShape = new Square();
 		console.log("User selected Square shape");
 	}
-	else if (user_shape_type === "Circle" || user_shape_type === "circle") {
-		user_shape = new Circle();
+	else if (shapeType === "Circle" || shapeType === "circle") {
+		userShape = new Circle();
 		console.log("User selected Circle shape");
 	}
-	else if (user_shape_type === "Triangle" || user_shape_type === "triangle") {
-		user_shape = new Triangle();
+	else if (shapeType === "Triangle" || shapeType === "triangle") {
+		userShape = new Triangle();
 		console.log("User selected Triangle shape");
 	}
 	else {
 		console.log("Invalid shape!");
 	}
-	user_shape.setColor(user_shape_color);
+	userShape.setColor(shapeColor);
 
-	// Create a new Svg instance and add the shape and text elements to it
-	var svg = new Svg();
-	svg.setTextElement(user_text, user_font_color);
-	svg.setShapeElement(user_shape);
+	var svg = new svgConstructor();
+	svg.setTextElement(user_text, fontColor);
+	svg.setShapeElement(userShape);
 	svgText = svg.render();
 	
 	//Print shape to log
-	console.log("Displaying shape:\n\n" + svgText);
-	//document.getElementById("svg_image").innerHTML = svgText;
+	console.log("Displaying shape:\n" + svgText);
 
-	console.log("Shape generation complete!");
+	console.log("Generating shape!");
 	console.log("Writing shape to file...");
 	writeToFile(svg_file, svgText); 
 }
 init()
-
-//     inquirer.prompt(questions)
-//     .then((answers) => {
-//         const shapes = {circle, square, triangle}
-
-//     })
-
-
-// function init() {
-
-// };
