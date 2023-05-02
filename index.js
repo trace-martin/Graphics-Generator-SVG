@@ -11,10 +11,10 @@ class svgConstructor{
 
         return `<svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="300" height="200">${this.shapeEl}${this.textEl}</svg>`
     }
-    setTextElement(text,color){
+    setTextEl(text,color){
         this.textEl = `<text x="150" y="125" font-size="60" text-anchor="middle" fill="${color}">${text}</text>`
     }
-    setShapeElement(shape){
+    setShapeEl(shape){
         this.shapeEl = shape.render()
 
     }
@@ -27,17 +27,24 @@ const questions = [
     {
         type: "input",
         name: "text",
-        message: "TEXT: Please enter up to (3) Characters only:",
+        message: "Please make sure that your TEXT is between 1-3 characters:",
+        validate: textInput => {
+            if (textInput.length > 0 && textInput.length < 4) {
+                return true;
+            } else {
+                return console.log('\nPlease make sure that your TEXT is between 1-3 characters.');
+            }
+        }
     },
     {
         type: "input",
         name: "textColor",
-        message: "TEXT COLOR: Please enter a color for your Text:",
+        message: "Please enter a color for your Text:",
     },
     {
         type: "input",
-        name: "shape",
-        message: "SHAPE COLOR: What color would you like your shape to be:",
+        name: "shapeColor",
+        message: "What color would you like your shape to be:",
     },
     {
         type: "list",
@@ -59,35 +66,31 @@ function writeToFile(fileName, data) {
 }
 
 async function init() {
-    console.log("Starting init");
-	var svgText = "";
-	var svg_file = "logo.svg";
+    console.log("Welcome to my SVG generator. Please follow the prompts below!");
+	let svgText = "";
+	let svgFile = "logo.svg";
+    let textColor = '';
 
-    // Prompt the user for answers
+    // Prompt the user for answers then waits for the input
     const answers = await inquirer.prompt(questions);
 
-	//user text
-	var user_text = "";
+	//user text is set to empty until given prompt. 
+    // takes input and test to see if between 1-3 characters long
+	let userText = "";
 	if (answers.text.length > 0 && answers.text.length < 4) {
-		// 1-3 chars, valid entry
-		user_text = answers.text;
-	} else {
-		// 0 or 4+ chars, invalid entry
-		console.log("Invalid user text field detected! Please enter 1-3 Characters, no more and no less");
-        return;
+		userText = answers.text;
 	}
-	console.log(`User text: ${user_text}`);
-	//user font color
-	fontColor = answers["textColor"];
-	console.log(`User font color: ${fontColor}`);
-	//user shape color
-	shapeColor = answers.shape;
-	console.log(`User shape color: ${shapeColor}`);
-	//user shape type
-	shapeType = answers["shapeType"];
-	console.log(`User entered shape = ${shapeType}`);
+
+    // logs user input for each question into terminal
+	console.log(`User text: ${userText}`);
+	textColor = answers["textColor"];
+	console.log(`User font color: ${textColor}`);
+	shapeColor = answers.shapeColor;
+	console.log(`User shape color is: ${shapeColor}`);
+	shapeType = answers.shapeType;
+	console.log(`User shape chosen: ${shapeType}`);
 	
-	//user shape
+	// setting shape for new svg
 	let userShape;
 	if (shapeType === "Square" || shapeType === "square") {
 		userShape = new Square();
@@ -102,20 +105,16 @@ async function init() {
 		console.log("User selected Triangle shape");
 	}
 	else {
-		console.log("Invalid shape!");
+		console.log("Uh oh something went wrong! Lets try again!");
 	}
-	userShape.setColor(shapeColor);
-
-	var svg = new svgConstructor();
-	svg.setTextElement(user_text, fontColor);
-	svg.setShapeElement(userShape);
+	// have to set shapeColor before construction
+    userShape.setColor(shapeColor);
+    
+    // final generation of SVG
+	const svg = new svgConstructor();
+	svg.setTextEl(userText, textColor);
+	svg.setShapeEl(userShape);
 	svgText = svg.render();
-	
-	//Print shape to log
-	console.log("Displaying shape:\n" + svgText);
-
-	console.log("Generating shape!");
-	console.log("Writing shape to file...");
-	writeToFile(svg_file, svgText); 
+	writeToFile(svgFile, svgText); 
 }
 init()
