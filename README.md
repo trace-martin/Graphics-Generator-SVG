@@ -8,7 +8,7 @@
   This application allows users to enter input into the terminal, using inquirer prompts to generate a logo.svg file.
 
   # ScreenCastify video link:
-
+  [Video Demo](https://drive.google.com/file/d/1myK164wnZ3viVdwklIMTNPRnTWOL-nwI/view)
 
   ## Table of Contents:
 
