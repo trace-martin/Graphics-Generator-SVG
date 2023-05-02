@@ -39,12 +39,12 @@ const questions = [
     {
         type: "input",
         name: "textColor",
-        message: "Please enter a color for your Text:",
+        message: "Please enter a color for your Text (OR a hexadecimal number):",
     },
     {
         type: "input",
         name: "shapeColor",
-        message: "What color would you like your shape to be:",
+        message: "Please enter a color for your SHAPE (OR a hexadecimal number):",
     },
     {
         type: "list",
@@ -82,27 +82,24 @@ async function init() {
 	}
 
     // logs user input for each question into terminal
-	console.log(`User text: ${userText}`);
+	console.log(`\nUser text: ${userText}`);
 	textColor = answers["textColor"];
 	console.log(`User font color: ${textColor}`);
 	shapeColor = answers.shapeColor;
 	console.log(`User shape color is: ${shapeColor}`);
 	shapeType = answers.shapeType;
-	console.log(`User shape chosen: ${shapeType}`);
+	console.log(`User shape chosen: ${shapeType}\n`);
 	
 	// setting shape for new svg
 	let userShape;
 	if (shapeType === "Square" || shapeType === "square") {
 		userShape = new Square();
-		console.log("User selected Square shape");
 	}
 	else if (shapeType === "Circle" || shapeType === "circle") {
 		userShape = new Circle();
-		console.log("User selected Circle shape");
 	}
 	else if (shapeType === "Triangle" || shapeType === "triangle") {
 		userShape = new Triangle();
-		console.log("User selected Triangle shape");
 	}
 	else {
 		console.log("Uh oh something went wrong! Lets try again!");
