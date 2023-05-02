@@ -54,7 +54,7 @@
 
   ## Contributing:
 
-  Anyone is able to contribute to this project. One must simply fork the repo.
+  No contributions at this time.
 <br><br>
   ## Questions:
   <hr>
