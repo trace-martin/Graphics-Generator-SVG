@@ -18,7 +18,9 @@
   [Video Demo](https://drive.google.com/file/d/1myK164wnZ3viVdwklIMTNPRnTWOL-nwI/view)
 
   ## Table of Contents:
-
+  - [User Story](#user-story)
+  - [Acceptance Criteria](#acceptance-criteria)
+  - [Preview](#preview)
   - [Installation](#installation)
   - [Usage](#usage)
   - [License](#license)
@@ -27,7 +29,39 @@
   - [Questions](#questions)
   - [Resources](#resources)
   <hr>
-  
+
+  ### User Story
+
+  ```md
+  AS a freelance web developer
+  I WANT to generate a simple logo for my projects
+  SO THAT I don't have to pay a graphic designer
+  ```
+  ## Acceptance Criteria
+
+  ```md
+  GIVEN a command-line application that accepts user input
+  WHEN I am prompted for text
+  THEN I can enter up to three characters
+  WHEN I am prompted for the text color
+  THEN I can enter a color keyword (OR a hexadecimal number)
+  WHEN I am prompted for a shape
+  THEN I am presented with a list of shapes to choose from: circle, triangle, and square
+  WHEN I am prompted for the shape's color
+  THEN I can enter a color keyword (OR a hexadecimal number)
+  WHEN I have entered input for all the prompts
+  THEN an SVG file is created named `logo.svg`
+  AND the output text "Generated logo.svg" is printed in the command line
+  WHEN I open the `logo.svg` file in a browser
+  THEN I am shown a 300x200 pixel image that matches the criteria I entered
+  ```
+
+  ## Preview
+  ![image](https://user-images.githubusercontent.com/123417800/235717571-eeafbd0e-c1e4-4cdc-8e7a-a997b26fd5d6.png)
+  ![image](https://user-images.githubusercontent.com/123417800/235717771-1df8f00e-1098-4492-bf39-4c05ea0054f8.png)
+  ![image](https://user-images.githubusercontent.com/123417800/235718043-b29d95d2-ba48-447a-b6ab-73eb6783172a.png)
+  <hr>
+
   ## Installation:
 
   A user can either:
@@ -72,3 +106,4 @@
   [Shields.io](https://shields.io/)
   <br>
   [MDN Web Docs](https://developer.mozilla.org/en-US/docs/Web/SVG/Tutorial)
+
