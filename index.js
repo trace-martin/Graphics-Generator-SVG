@@ -2,7 +2,7 @@ const fs = require('fs')
 const inquirer = require("inquirer");
 const {Circle, Square, Triangle} = require("./lib/shapes");
 
-class svgConstructor{
+class svgConstruction{
     constructor(){
         this.textEl = ''
         this.shapeEl = ''
@@ -27,7 +27,7 @@ const questions = [
     {
         type: "input",
         name: "text",
-        message: "Please make sure that your TEXT is between 1-3 characters:",
+        message: "What would you like your TEXT to be?:",
         validate: textInput => {
             if (textInput.length > 0 && textInput.length < 4) {
                 return true;
@@ -55,60 +55,61 @@ const questions = [
 ];
 
 // Function to write data to file
-function writeToFile(fileName, data) {
-	console.log(`Writing ${data} to file ${fileName}`)
-    fs.writeFile(fileName, data, function (err) {
+function writeToFile(logoSvg, data) {
+	console.log(`Writing ${data} to file ${logoSvg}`)
+    fs.writeFile(logoSvg, data, function (err) {
         if (err) {
             return console.log(err);
         }
-        console.log("Congratulations, you have Generated a logo.svg!");
+        console.log("Generated logo.svg!");
     });
 }
 
 async function init() {
     console.log("Welcome to my SVG generator. Please follow the prompts below!");
+    console.log("Your TEXT should only be between 1-3 characters long.")
 	let svgText = "";
 	let svgFile = "logo.svg";
     let textColor = '';
 
-    // Prompt the user for answers then waits for the input
-    const answers = await inquirer.prompt(questions);
+    // waits for the prompts to be answered
+    const userInput = await inquirer.prompt(questions);
 
-	//user text is set to empty until given prompt. 
+	//user text is set to empty until given data. 
     // takes input and test to see if between 1-3 characters long
 	let userText = "";
-	if (answers.text.length > 0 && answers.text.length < 4) {
-		userText = answers.text;
-	}
+    if (userInput.text === '') {
+        return false
+    } else {
+        userText = userInput.text;
+    }
 
     // logs user input for each question into terminal
 	console.log(`\nUser text: ${userText}`);
-	textColor = answers["textColor"];
+	textColor = userInput.textColor;
 	console.log(`User font color: ${textColor}`);
-	shapeColor = answers.shapeColor;
+	shapeColor = userInput.shapeColor;
 	console.log(`User shape color is: ${shapeColor}`);
-	shapeType = answers.shapeType;
+	shapeType = userInput.shapeType;
 	console.log(`User shape chosen: ${shapeType}\n`);
 	
 	// setting shape for new svg
 	let userShape;
-	if (shapeType === "Square" || shapeType === "square") {
+	if (shapeType === "Square") {
 		userShape = new Square();
 	}
-	else if (shapeType === "Circle" || shapeType === "circle") {
+	else if (shapeType === "Circle") {
 		userShape = new Circle();
 	}
-	else if (shapeType === "Triangle" || shapeType === "triangle") {
+	else if (shapeType === "Triangle") {
 		userShape = new Triangle();
 	}
-	else {
-		console.log("Uh oh something went wrong! Lets try again!");
-	}
+
 	// have to set shapeColor before construction
     userShape.setColor(shapeColor);
     
     // final generation of SVG
-	const svg = new svgConstructor();
+	const svg = new svgConstruction();
 	svg.setTextEl(userText, textColor);
 	svg.setShapeEl(userShape);
 	svgText = svg.render();
