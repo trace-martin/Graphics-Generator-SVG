@@ -2,32 +2,39 @@ const fs = require('fs')
 const inquirer = require("inquirer");
 const {Circle, Square, Triangle} = require("./lib/shapes");
 
-class svgConstruction{
-    constructor(){
-        this.textEl = ''
-        this.shapeEl = ''
-    }
-    render(){
+class svgConstruction {
+    #textEl = '';
+    #shapeEl = '';
 
-        return `<svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="300" height="200">${this.shapeEl}${this.textEl}</svg>`
+    render() {
+      return `
+        <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="300" height="200">
+          ${this.#shapeEl}
+          ${this.#textEl}
+        </svg>
+      `;
     }
-    setTextEl(text,color){
-        this.textEl = `<text x="150" y="125" font-size="60" text-anchor="middle" fill="${color}">${text}</text>`
+    // sets text color and fills the code below
+    setTextEl(text, color) {
+      this.#textEl = `
+        <text x="150" y="125" font-size="60" text-anchor="middle" fill="${color}">
+          ${text}
+        </text>
+      `;
     }
-    setShapeEl(shape){
-        this.shapeEl = shape.render()
-
+  
+    setShapeEl(shape) {
+      this.#shapeEl = shape.render();
     }
-    
 }
 
 // Defines array of 'questions' using the 'inquirer' library with the following questions.
 // Each question is an object that specifies the properties of TEXT, TEXT COLOR, SHAPE COLOR, and Pixel Image.
 const questions = [
     {
-        type: "input",
-        name: "text",
-        message: "What would you like your TEXT to be?:",
+    type: "input",
+    name: "text",
+    message: "What would you like your TEXT to be?:",
         validate: textInput => {
             if (textInput.length > 0 && textInput.length < 4) {
                 return true;
@@ -85,13 +92,13 @@ async function init() {
     }
 
     // logs user input for each question into terminal
-	console.log(`\nUser text: ${userText}`);
+	console.log(`\nlogo.svg text is ${userText}`);
 	textColor = userInput.textColor;
-	console.log(`User font color: ${textColor}`);
+	console.log(`User chose ${textColor} for text color.`);
 	shapeColor = userInput.shapeColor;
-	console.log(`User shape color is: ${shapeColor}`);
+	console.log(`User chose ${shapeColor} for shape color.`);
 	shapeType = userInput.shapeType;
-	console.log(`User shape chosen: ${shapeType}\n`);
+	console.log(`User chose ${shapeType}\n`);
 	
 	// setting shape for new svg
 	let userShape;

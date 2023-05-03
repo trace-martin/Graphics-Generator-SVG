@@ -5,7 +5,7 @@
   
   ## Description:
 
-  This application uses inquier prompts to generate a logo.svg file.<br>
+  This application uses inquirer prompts to generate a logo.svg file.<br>
   The user will be prompted with 4 questions:<br>
   * <span style="color:red;">First </span>- what would like your SVG TEXT to be?
   * <span style="color:red;">Second </span>- color for your TEXT
@@ -76,7 +76,8 @@
   <span style="color:red;">Third</span> - move through the prompts to generate the logo.svg.
   ## Usage:
 
-  The purpose of this project was to create an easy way to generate an SVG file using inputs from a user.
+  The purpose of this project was to create an easy way to generate an SVG file using inputs from a user.<br>
+  Inquirer will prompt the user with 4 questions pertaining to the svg logo. After answering the prompts, user input will be taken and applied to the index.js for construction of svg.
 
   ## License:
 
